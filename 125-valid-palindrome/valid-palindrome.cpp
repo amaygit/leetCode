@@ -1,15 +1,19 @@
 class Solution {
 public:
     bool isPalindrome(string s) {
-        string res="";
-        for(auto p:s){
-            if(isalnum(p)){
-                res+=(p);
+        int st=0,end=s.length()-1;
+        while(st<end){
+            if((tolower(s[st]))==(tolower(s[end]))){
+                st++;
+                end--;
             }
+            else if(!isalnum(s[st]))
+            st++;
+             else if(!isalnum(s[end]))
+            end--;
+            else
+            return false;
         }
- transform(res.begin(),res.end(),res.begin(),::tolower);
- string q=res;
- reverse(res.begin(),res.end());
-    return (res==q)?true:false;
+        return true;
     }
 };
