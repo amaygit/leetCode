@@ -2,12 +2,12 @@ class Solution {
 public:
 bool isSafe(int row,vector<string>&temp,int col,int n){
     //row wise
-    for(int i=0;i<row;i++){
+    for(int i=0;i<n;i++){
         if(temp[i][col]=='Q')
         return false;
     }
       //Col wise
-    for(int j=0;j<col;j++){
+    for(int j=0;j<n;j++){
         if(temp[row][j]=='Q')
         return false;
     }
