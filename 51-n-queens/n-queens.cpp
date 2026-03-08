@@ -1,47 +1,51 @@
 class Solution {
 public:
-bool isSafe(int row,vector<string>&temp,int col,int n){
-    //row wise
-    for(int i=0;i<n;i++){
-        if(temp[i][col]=='Q')
-        return false;
-    }
-      //Col wise
-    for(int j=0;j<n;j++){
-        if(temp[row][j]=='Q')
-        return false;
-    }
-    //diagonal right side
-     
-          for(int i = row-1, j = col+1; i >= 0 && j < n; i--, j++){
-        if(temp[i][j]=='Q')
-        return false;
-    }
-     //diagonal left side
-       for(int i = row-1, j = col-1; i >= 0 && j >= 0; i--, j--){
-        if(temp[i][j]=='Q')
-        return false;
-    }
-    return true;
-}
-    void calc(int n,vector<vector<string>>&ans,vector<string>&temp,int row){
-        if(row==n){
-        ans.push_back({temp});
-        return ;
+    bool isSafe(vector<string>&bored,int col,int n,int row){
+        //row wise
+        for(int i=0;i<n;i++){
+            if(bored[row][i]=='Q')
+            return false;
         }
-        for(int j=0;j<n;j++){
-            if(isSafe(row,temp,j,n)){
-                temp[row][j]='Q';
-            calc(n,ans,temp,row+1);
-            temp[row][j]='.';
-            }
+        //col wise
+        for(int i=0;i<n;i++){
+            if(bored[i][col]=='Q')
+            return false;
+        }
+        //digonal right
+        for(int i=row,j=col;i>=0 && j<n;i--,j++){
+              if(bored[i][j]=='Q')
+            return false;
+        }
+           //digonal left
+        for(int i=row,j=col;i>=0 && j>=0;i--,j--){
+              if(bored[i][j]=='Q')
+            return false;
+        }
+        return true;
+    }
+
+    void calc(vector<vector<string>>&ans,vector<string> &bored,int n,int indx){
+        if(indx==n)
+        {
+            ans.push_back(bored);
+            return ;
+        }
+        for(int i=0;i<n;i++){
+            if(isSafe(bored,i,n,indx)){
+                bored[indx][i]='Q';
+                calc(ans,bored,n,indx+1);
+            
+                bored[indx][i]='.';
+                }
             
         }
     }
+
     vector<vector<string>> solveNQueens(int n) {
-        vector<vector<string>>ans;
-        vector<string> temp(n, string(n, '.'));
-        calc(n,ans,temp,0);
+       vector<vector<string>> ans;
+        vector<string>bored(n,string(n,'.'));
+        calc(ans,bored,n,0);
         return ans;
+
     }
 };
