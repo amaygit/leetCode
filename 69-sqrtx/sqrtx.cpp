@@ -1,6 +1,10 @@
 class Solution {
 public:
     int mySqrt(int x) {
-        return pow(x,0.5);
+      long long i=0;
+      while(i*i <= x){
+        i++;
+      }
+      return i-1;  
     }
 };
