@@ -4,35 +4,24 @@ public:
         int m = grid.size(), n = grid[0].size();
 
         long long total = 0;
+        for (auto &row : grid)
+            for (int x : row)
+                total += x;
 
-        // total sum
-        for(int i = 0; i < m; i++) {
-            for(int j = 0; j < n; j++) {
-                total += grid[i][j];
-            }
+        long long pref = 0;
+
+        // Horizontal cut
+        for (int i = 0; i < m - 1; i++) {
+            for (int j = 0; j < n; j++) pref += grid[i][j];
+            if (pref * 2 == total) return true;
         }
 
-        // must be even
-        if(total % 2 != 0) return false;
+        pref = 0;
 
-        long long target = total / 2;
-
-        // 🔹 Horizontal cut
-        long long sum = 0;
-        for(int i = 0; i < m - 1; i++) {
-            for(int j = 0; j < n; j++) {
-                sum += grid[i][j];
-            }
-            if(sum == target) return true;
-        }
-
-        // 🔹 Vertical cut
-        sum = 0;
-        for(int j = 0; j < n - 1; j++) {
-            for(int i = 0; i < m; i++) {
-                sum += grid[i][j];
-            }
-            if(sum == target) return true;
+        // Vertical cut
+        for (int j = 0; j < n - 1; j++) {
+            for (int i = 0; i < m; i++) pref += grid[i][j];
+            if (pref * 2 == total) return true;
         }
 
         return false;
