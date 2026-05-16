@@ -1,34 +1,32 @@
 class Solution {
 public:
-    void backtrack(string digits, int index, string current, vector<string>& result, vector<string>& mapping) {
-        // Base case: If the combination is done
-        if (index == digits.length()) {
-            result.push_back(current);
+    vector<string> ans;
+
+    void solve(string digits, int idx, string curr,
+               vector<string>& mp) {
+
+        if (idx == digits.size()) {
+            ans.push_back(curr);
             return;
         }
 
-        // Get letters for the current digit (e.g., '2' -> "abc")
-        string letters = mapping[digits[index] - '0'];
+        string letters = mp[digits[idx] - '0'];
 
-        for (char letter : letters) {
-            // 1. Add the letter
-            current.push_back(letter);
-            // 2. Move to the next digit
-            backtrack(digits, index + 1, current, result, mapping);
-            // 3. Backtrack: remove the letter so we can try the next one
-            current.pop_back();
+        for (char ch : letters) {
+            solve(digits, idx + 1, curr + ch, mp);
         }
     }
 
     vector<string> letterCombinations(string digits) {
         if (digits.empty()) return {};
 
-        vector<string> result;
-        vector<string> mapping = {
-            "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"
+        vector<string> mp = {
+            "", "", "abc", "def", "ghi",
+            "jkl", "mno", "pqrs", "tuv", "wxyz"
         };
 
-        backtrack(digits, 0, "", result, mapping);
-        return result;
+        solve(digits, 0, "", mp);
+
+        return ans;
     }
 };
