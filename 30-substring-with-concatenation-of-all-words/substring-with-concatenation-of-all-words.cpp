@@ -1,51 +1,60 @@
 class Solution {
 public:
     vector<int> findSubstring(string s, vector<string>& words) {
-        vector<int> result;
-        int sLen = s.length();
+        vector<int> ans;
+
+        int n = s.size();
+        int wordLen = words[0].size();
         int wordCount = words.size();
-        int wordLen = words[0].length();
-        int totalWindowLen = wordCount * wordLen;
+        int totalLen = wordLen * wordCount;
 
-        if (sLen < totalWindowLen) return result;
+        unordered_map<string, int> target;
 
-        // Map of what we NEED
-        unordered_map<string, int> targetMap;
-        for (const string& w : words) targetMap[w]++;
+        for (string &w : words)
+            target[w]++;
 
-        // Loop through each possible offset (0 to wordLen - 1)
-        for (int i = 0; i < wordLen; ++i) {
-            int left = i, right = i, count = 0;
-            unordered_map<string, int> windowMap;
+        for (int offset = 0; offset < wordLen; offset++) {
 
-            while (right + wordLen <= sLen) {
+            int left = offset;
+            int count = 0;
+
+            unordered_map<string, int> window;
+
+            for (int right = offset; right + wordLen <= n; right += wordLen) {
+
                 string word = s.substr(right, wordLen);
-                right += wordLen;
 
-                if (targetMap.count(word)) {
-                    windowMap[word]++;
+                if (target.count(word)) {
+
+                    window[word]++;
                     count++;
 
-                    // If we have too many of 'word', shrink from left
-                    while (windowMap[word] > targetMap[word]) {
+                    while (window[word] > target[word]) {
                         string leftWord = s.substr(left, wordLen);
-                        windowMap[leftWord]--;
-                        count--;
+
+                        window[leftWord]--;
                         left += wordLen;
+                        count--;
                     }
 
-                    // Check if we found a match
                     if (count == wordCount) {
-                        result.push_back(left);
+                        ans.push_back(left);
+
+                        string leftWord = s.substr(left, wordLen);
+                        window[leftWord]--;
+
+                        left += wordLen;
+                        count--;
                     }
+
                 } else {
-                    // Invalid word: reset window and start after this word
-                    windowMap.clear();
+                    window.clear();
                     count = 0;
-                    left = right;
+                    left = right + wordLen;
                 }
             }
         }
-        return result;
+
+        return ans;
     }
 };
