@@ -1,39 +1,30 @@
 class Solution {
 public:
     void nextPermutation(vector<int>& nums) {
-        int pivot=-1,index=-1;;
-      
-        int st=0,end=nums.size()-1;
-        if(nums.size()==2)
-        {
-            swap(nums[0],nums[1]);
-            return;
+
+        int n = nums.size();
+
+        int i = n - 2;
+
+        // find pivot
+        while (i >= 0 && nums[i] >= nums[i + 1]) {
+            i--;
         }
-        for(int i=nums.size()-1;i>0;i--){
-            if(nums[i-1]<nums[i]){
-                pivot=nums[i-1];
-               
-                index=i-1;
-                break;
+
+        // if pivot exists
+        if (i >= 0) {
+
+            int j = n - 1;
+
+            // find next greater element
+            while (nums[j] <= nums[i]) {
+                j--;
             }
-        }
-        if(index==-1){
-        reverse(nums.begin(),nums.end());
-        return ;
-        }
-        for(int i=nums.size()-1;i>0;i--){
-            if(pivot<nums[i]){
-                swap(nums[i],nums[index]);
-                break;
-            }
-        }
-            reverse(nums.begin()+index+1,nums.end());
-        
 
-        
-            
+            swap(nums[i], nums[j]);
+        }
 
-
-        
+        // reverse suffix
+        reverse(nums.begin() + i + 1, nums.end());
     }
 };
