@@ -3,23 +3,27 @@ public:
     int largestRectangleArea(vector<int>& heights) {
         stack<int> st;
         int maxArea = 0;
-        heights.push_back(0); // Trick: Add a 0 to process all remaining bars
+        int n = heights.size();
 
-        for (int i = 0; i < heights.size(); i++) {
-            // While current bar is shorter than the bar at stack top
-            while (!st.empty() && heights[st.top()] > heights[i]) {
+        for (int i = 0; i <= n; i++) {
+            int currHeight = (i == n) ? 0 : heights[i];
+
+            while (!st.empty() && heights[st.top()] > currHeight) {
                 int h = heights[st.top()];
                 st.pop();
-                
-                // Width is current index - new top index - 1
-                // If stack is empty, it means this was the shortest bar seen so far
-                int w = st.empty() ? i : i - st.top() - 1;
-                
-                maxArea = max(maxArea, h * w);
+
+                int width;
+                if (st.empty())
+                    width = i;
+                else
+                    width = i - st.top() - 1;
+
+                maxArea = max(maxArea, h * width);
             }
+
             st.push(i);
         }
-        
+
         return maxArea;
     }
 };
