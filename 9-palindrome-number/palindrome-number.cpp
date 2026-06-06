@@ -1,21 +1,22 @@
 class Solution {
 public:
     bool isPalindrome(int x) {
-        long long digit=0,ele=1,orginal=x;
-        vector<int>vec1;
-        vector<int>vec2;
-
+        long  long  y=0,c=0;
         if(x<0)
         return false;
+          long j=x,k=x;
+      while(k!=0){
+          c++;
+          k/=10;
+      }
         while(x!=0){
-            ele=x%10;
-            vec1.push_back(ele);
-           x=x/10;
+          c--;
+            y=(x%10)*pow(10,c)+y;
+           
+            x/=10;
         }
-        vec2=vec1;
-        reverse(vec1.begin(),vec1.end());
-        
-        
-        return vec1==vec2;
+        if(j==y)
+        return true;
+        return false;
     }
 };
