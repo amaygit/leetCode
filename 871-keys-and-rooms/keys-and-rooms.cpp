@@ -1,10 +1,11 @@
 class Solution {
 public:
     void dfs(int node,vector<vector<int>>& rooms , vector<int>&visited){
-        
+        if(visited[node]==1)
+        return ;
         visited[node]=1;
          for (auto i : rooms[node]) {
-            if(visited[i]==0)
+           
             dfs(i,rooms,visited);
         }
     }
